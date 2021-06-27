@@ -5,6 +5,7 @@
 ## Cosas por completar
 <ol>
     <li>Realizar testeos</li>
+    <li>Crear modelo de pastillas para la bases de datos</li>
     <li>Añadir las operaciones que faltan de CRUD</li>
 </ol>
 
