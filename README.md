@@ -4,7 +4,6 @@
 
 ## Cosas por completar
 <ol>
-    <li>Registro e inicio de sesión de usuarios</li>
     <li>Realizar testeos</li>
     <li>Añadir las operaciones que faltan de CRUD</li>
 </ol>
