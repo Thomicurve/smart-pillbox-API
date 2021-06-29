@@ -1,60 +1,42 @@
 require('../database/db');
 const Record = require('../models/records');
-const jwt = require('jsonwebtoken');
-
-
-function verifyHeaders(req) {
-    const token = req.headers['x-access-token'];
-    
-    if(!token) 
-        return undefined;
-
-    const idUser = jwt.verify(token, process.env.SECRET);
-
-    return idUser;
-}
 
 
 exports.submitRecord = async (req, res) => {
-    const { pillName, pillDate, amount } = req.body;
-    const idUser = verifyHeaders(req);
-
-    if(!idUser){
-        return res
-        .json({done: false,})
-        .status(404);
-    }
+    const { pillName, pillDate, amount, repeat } = req.body;
     
-    if(!pillName || !pillDate || !amount) 
+    if(!pillName || !pillDate || !amount || !repeat) 
         return res
-        .json({ message: 'Unexpected error', done: false,})
-        .status(404);
+            .json({ message: 'Data empty', done: false,})
+            .status(403);
 
-    const record = new Record({
-        pillName,
-        pillDate,
-        idUser,
-        amount
-    })
+    try{
+        const record = new Record({
+            pillName,
+            repeat,
+            pillDate,
+            idUser: req.userId,
+            amount
+        })
 
-    await record.save();
+        record.pillDate = record.formatPillDate(record.pillDate);
+        await record.save();
 
-    return res
-    .json({done: true})
-    .status(200);
+        return res
+            .json({done: true})
+            .status(200);
+    }
+    catch {
+        throw new Error('error on submiting a new record')
+    }
 }
 
 exports.getRecords = async (req, res) => {
-    const idUser = verifyHeaders(req);
-    if(!idUser){
-        return res
-        .json({done: false, message: 'user not logged'})
-        .status(404);
-    }
-    
-    const records = await Record.find({idUser: idUser}, (err) => {
+    const records = await Record.find({idUser: req.userId}, (err) => {
         return err;
     })
     
-    return res.json({records: records})
+    return res
+        .json({records: records})
+        .status(200);
 }

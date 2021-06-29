@@ -1,12 +1,17 @@
 const { Schema, model } = require('mongoose');
+const moment = require('moment');
 
 const recordsSchema = new Schema({
     pillName: {
         type: String,
         required: true
     },
+    repeat:{
+        type: Number, // 1 = Monday / 2 = Tuesday / ... / 7 = Sunday
+        required: true,
+    },
     pillDate: {
-        type: Date,
+        type: String,
         required: true
     },
     idUser: {
@@ -19,6 +24,17 @@ const recordsSchema = new Schema({
         default: 1
     }
 })
+
+recordsSchema.methods.formatPillDate = function (date) {
+    try {
+        const pillHour = moment(date).format('LT');
+        return pillHour;
+    }
+    catch {
+        throw new Error('Error on format');
+    }
+    
+}
 
 module.exports = model('Records', recordsSchema);
 

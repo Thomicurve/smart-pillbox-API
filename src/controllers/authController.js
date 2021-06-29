@@ -3,19 +3,20 @@ const Users = require('../models/users');
 
 exports.login = async (req, res) => {
     const { dni } = req.body;
-    const result = await Users.findOne({dni: dni}, (err) => {
+    const resultUser = await Users.findOne({dni: dni}, (err) => {
         return err;
     });
 
-    if(!result)
+    if(!resultUser)
         return res
-        .json({done: false, message:'User not found'})
-        .status(200);
-    
-    const token = jwt.sign(result.dni, process.env.SECRET);
+            .json({done: false, message:'User not found'})
+            .status(404);
+
+    // Create token with user dni
+    const token = jwt.sign(resultUser.dni, process.env.SECRET);
     return res
-    .json({result: result.dni, token: token})
-    .status(200);
+        .json({result: resultUser.dni, token: token})
+        .status(200);
 }
 
 exports.register = async (req, res) => {
@@ -24,24 +25,24 @@ exports.register = async (req, res) => {
 
     if(verifyUser)
         return res
-        .json({message: 'User already register', done: false})
-        .status(304); 
+            .json({message: 'User already register', done: false})
+            .status(400); 
 
     if(!dni || !name)
         return res
-        .json({message: 'Data empty', done: false})
-        .status(404);
+            .json({message: 'Data empty', done: false})
+            .status(400);
 
+    // Create a new document in Users
     const user = new Users({
         dni,
         name,
         age
     })
     
-    const result = await user.save();
-    console.log(result);
+    await user.save();
 
     return res
-    .json({done: true})
-    .status(200);
+        .json({done: true})
+        .status(200);
 }
