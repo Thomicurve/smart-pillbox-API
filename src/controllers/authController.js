@@ -1,26 +1,28 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../models/users');
 
+
 exports.login = async (req, res) => {
     const { dni } = req.body;
+    
     const resultUser = await Users.findOne({dni: dni}, (err) => {
         return err;
     });
-
+    console.log(resultUser)
     if(!resultUser)
         return res
             .json({done: false, message:'User not found'})
             .status(404);
 
-    // Create token with user dni
-    const token = jwt.sign(resultUser.dni, process.env.SECRET);
+    // Create token with user id
+    const token = jwt.sign(resultUser._id.toString(), process.env.SECRET);
     return res
-        .json({result: resultUser.dni, token: token})
+        .json({token: token})
         .status(200);
 }
 
 exports.register = async (req, res) => {
-    const { dni, name, age } = req.body;
+    const { dni, name } = req.body;
     const verifyUser = await Users.findOne({dni: dni});
 
     if(verifyUser)
@@ -37,9 +39,7 @@ exports.register = async (req, res) => {
     const user = new Users({
         dni,
         name,
-        age
     })
-    
     await user.save();
 
     return res

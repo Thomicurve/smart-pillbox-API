@@ -1,18 +1,14 @@
 const { Schema, model } = require('mongoose')
+const bcrypt = require('bcrypt');
 
 const Users = new Schema({
     dni: {
-        type: Number,
+        type: String,
         required: true 
     },
     name: {
         type: String,
         required: true
-    },
-    age: {
-        type: Number,
-        required: false,
-        default: 0
     }
 })
 
