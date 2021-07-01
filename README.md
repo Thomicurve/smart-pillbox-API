@@ -12,7 +12,7 @@
 <hr/>
 
 ### Variables de entorno
-<h6>MONGO_URI = mongodb://127.0.0.1:27017/smart-pillbox</h6>
+<h6>MONGO_URI = mongodb+srv://smartpillbox:92876374@cluster0.dyku1.mongodb.net/api-smartpillbox</h6>
 <h6>SECRET = 092408</h6>
 
 <h3>Contribuyentes</h3>
