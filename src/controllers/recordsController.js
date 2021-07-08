@@ -7,7 +7,7 @@ exports.submitRecord = async (req, res) => {
     if(!pillName || !pillDate || !amount) 
         return res
             .json({ message: 'Data empty', done: false,})
-            .status(403);
+            .status(400);
 
     try{
         const record = new Record({
@@ -36,6 +36,19 @@ exports.getRecords = async (req, res) => {
 
     return res
         .json({records: records})
+        .status(200);
+}
+
+exports.getOneRecord = async (req, res) => {
+    console.log(req.params.id);
+    const record = await Record.findById(req.params.id);
+    if(!record)
+        return res
+            .json({done: false, message: 'Record not found'})
+            .status(404);
+
+    res
+        .json({done: true, record: record})
         .status(200);
 }
 

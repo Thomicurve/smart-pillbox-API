@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Users = require('../models/users');
+
 function userMustBeLogged (req, res, next) {
     const token = req.headers['x-access-token'];
     

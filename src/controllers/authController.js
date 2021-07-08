@@ -8,7 +8,7 @@ exports.login = async (req, res) => {
     const resultUser = await Users.findOne({dni: dni}, (err) => {
         return err;
     });
-    console.log(resultUser)
+
     if(!resultUser)
         return res
             .json({done: false, message:'User not found'})

@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment');
 
 const PillsSchema = new Schema({
     pillName: {
@@ -23,16 +22,5 @@ const PillsSchema = new Schema({
         required: true
     }
 })
-
-PillsSchema.methods.formatPillDate = function (date) {
-    try {
-        const pillHour = moment(date).format('LT');
-        return pillHour;
-    }
-    catch {
-        throw new Error('Error on format');
-    }
-    
-}
 
 module.exports = model('Pills', PillsSchema);

@@ -22,7 +22,9 @@ exports.submitPills = async (req, res) => {
     });
     await pill.save();
 
-    res.json({done: true});
+    return res
+        .json({done: true})
+        .status(200);
 }
 
 
@@ -33,5 +35,26 @@ exports.getPills = async (req, res) => {
     }
     catch(err) {
         throw new Error(`error getting pills ${err}`);
+    }
+}
+
+exports.getOnePill = async (req, res) => {
+    const { id } = req.params;
+    if(!id) 
+        return res
+        .json({done: false, message: 'id pill empty'})
+        .status(400);
+
+    try {
+        const pill = await Pills.findOne({_id: id});
+        if(!pill)
+            return res
+                .json({done: false, message: 'Pill not found'})
+                .status(404);
+
+        return res.json({done: true, results: pill});
+    }
+    catch(err) {
+        throw new Error(`Error finding id / ${err}`)
     }
 }
