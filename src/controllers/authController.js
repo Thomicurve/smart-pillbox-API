@@ -11,13 +11,13 @@ exports.login = async (req, res) => {
 
     if(!resultUser)
         return res
-            .json({done: false, message:'User not found'})
+            .json({done: false, message:'Usuario no encontrado'})
             .status(404);
 
     // Create token with user id
     const token = jwt.sign(resultUser._id.toString(), process.env.SECRET);
     return res
-        .json({token: token})
+        .json({token: token, message: 'Inicio sesíon exitoso!'})
         .status(200);
 }
 
@@ -27,12 +27,12 @@ exports.register = async (req, res) => {
 
     if(verifyUser)
         return res
-            .json({message: 'User already register', done: false})
+            .json({message: 'El usuario ya está registrado'})
             .status(400); 
 
     if(!dni || !name)
         return res
-            .json({message: 'Data empty', done: false})
+            .json({message: 'Complete el formulario', done: false})
             .status(400);
 
     // Create a new document in Users
@@ -43,6 +43,6 @@ exports.register = async (req, res) => {
     await user.save();
 
     return res
-        .json({done: true})
+        .json({message: 'Usuario registrado correctamente!'})
         .status(200);
 }

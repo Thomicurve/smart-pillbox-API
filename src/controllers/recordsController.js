@@ -6,7 +6,7 @@ exports.submitRecord = async (req, res) => {
     
     if(!pillName || !pillDate || !amount) 
         return res
-            .json({ message: 'Data empty', done: false,})
+            .json({ message: 'Faltan datos'})
             .status(400);
 
     try{
@@ -25,7 +25,7 @@ exports.submitRecord = async (req, res) => {
     }
     catch(err) {
         console.log(err);
-        throw new Error('error on submiting a new record')
+        throw new Error('Error al guardar el registro')
     }
 }
 
@@ -44,7 +44,7 @@ exports.getOneRecord = async (req, res) => {
     const record = await Record.findById(req.params.id);
     if(!record)
         return res
-            .json({done: false, message: 'Record not found'})
+            .json({done: false, message: 'Registro no encontrado'})
             .status(404);
 
     res

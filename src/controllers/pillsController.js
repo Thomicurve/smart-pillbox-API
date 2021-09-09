@@ -9,7 +9,7 @@ exports.submitPills = async (req, res) => {
 
     if(!pillName || !repeat || !pillHour || !amount)
         return res
-            .json({message: 'Data empty', done: false})
+            .json({message: 'Faltan datos', done: false})
             .status(403);
 
     // PILLHOUR = 05:20 PM
@@ -23,7 +23,7 @@ exports.submitPills = async (req, res) => {
     await pill.save();
 
     return res
-        .json({done: true})
+        .json({message: 'Pastilla cargada con éxito'})
         .status(200);
 }
 
@@ -34,7 +34,7 @@ exports.getPills = async (req, res) => {
         return res.json({pills: resultsPills});
     }
     catch(err) {
-        throw new Error(`error getting pills ${err}`);
+        throw new Error(`Error obteniendo las pastillas ${err}`);
     }
 }
 
@@ -42,19 +42,19 @@ exports.getOnePill = async (req, res) => {
     const { id } = req.params;
     if(!id) 
         return res
-        .json({done: false, message: 'id pill empty'})
+        .json({message: 'id pill empty'})
         .status(400);
 
     try {
         const pill = await Pills.findOne({_id: id});
         if(!pill)
             return res
-                .json({done: false, message: 'Pill not found'})
+                .json({message: 'Pastilla no encontrada'})
                 .status(404);
-
         return res.json({done: true, results: pill});
     }
     catch(err) {
         throw new Error(`Error finding id / ${err}`)
     }
+    
 }
