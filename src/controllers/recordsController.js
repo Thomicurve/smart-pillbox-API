@@ -30,15 +30,15 @@ exports.submitRecord = async (req, res) => {
     }
 }
 
-// exports.getTodayRecords = async (req, res) => {
-//     const records = await Record.find({pillDate: moment()}, (err) => {
-//         return err
-//     })
+exports.getTodayRecords = async (req, res) => {
+    const records = await Record.find({pillDate: moment()}, (err) => {
+        return err
+    })
 
-//     return res
-//         .json({records})
-//         .status(200);
-// }
+    return res
+        .json({records})
+        .status(200);
+}
 
 exports.getRecords = async (req, res) => {
     const records = await Record.find({idUser: req.userId}, (err) => {

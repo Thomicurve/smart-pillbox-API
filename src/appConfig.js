@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const routes = require('./routes/mainRoutes');
 
 if(process.env.NODE_ENV !== 'production'){
     const morgan = require('morgan');
@@ -11,7 +12,7 @@ if(process.env.NODE_ENV !== 'production'){
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(require('./routes/mainRoutes'))
+app.use(routes)
 app.set('port', process.env.PORT);
 
 module.exports = app;

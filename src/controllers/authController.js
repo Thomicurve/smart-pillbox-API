@@ -46,3 +46,8 @@ exports.register = async (req, res) => {
         .json({message: 'Usuario registrado correctamente!'})
         .status(200);
 }
+
+exports.logout = (req, res) => {
+    req.userId = "";
+    return res.json({message: 'Cerró sesión exitosamente'}).status(200);
+}
