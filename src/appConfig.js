@@ -12,6 +12,6 @@ if(process.env.NODE_ENV !== 'production'){
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(require('./routes/mainRoutes'))
-app.set('port', 3000 || process.env.PORT);
+app.set('port', process.env.PORT);
 
 module.exports = app;

@@ -2,8 +2,8 @@ require('../database/db');
 const express = require('express');
 const router = express.Router();
 
-const { submitRecord, getRecords , getOneRecord} = require('../controllers/recordsController');
-const { register, login } = require('../controllers/authController');
+const { submitRecord, getRecords , getOneRecord, getTodayRecords} = require('../controllers/recordsController');
+const { register, login, logout } = require('../controllers/authController');
 const { getPills, submitPills, getOnePill} = require('../controllers/pillsController');
 const { userAlreadyLogged, userMustBeLogged} = require('./verifyToken');
 
@@ -13,6 +13,9 @@ router.get('/records', getRecords);
 
 router.post('/new-record', userMustBeLogged);
 router.post('/new-record', submitRecord);
+
+router.get('/todayrecords', userMustBeLogged);
+router.get('/todayrecords', getTodayRecords);
 
 router.get('/record/:id', userMustBeLogged);
 router.get('/record/:id', getOneRecord);
@@ -29,12 +32,15 @@ router.get('/pill/:id', userMustBeLogged);
 router.get('/pill/:id', getOnePill);
 
 
-// LOGIN & REGISTER
+// AUTH
 router.post('/register', userAlreadyLogged);
 router.post('/register', register);
 
 router.post('/login', userAlreadyLogged);
 router.post('/login', login);
+
+router.get('/logout', userMustBeLogged);
+router.get('/logout', logout);
 
 
 module.exports = router;

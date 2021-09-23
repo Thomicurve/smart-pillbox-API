@@ -1,4 +1,5 @@
 const Record = require('../models/records');
+const moment = require('moment');
 
 
 exports.submitRecord = async (req, res) => {
@@ -29,6 +30,16 @@ exports.submitRecord = async (req, res) => {
     }
 }
 
+// exports.getTodayRecords = async (req, res) => {
+//     const records = await Record.find({pillDate: moment()}, (err) => {
+//         return err
+//     })
+
+//     return res
+//         .json({records})
+//         .status(200);
+// }
+
 exports.getRecords = async (req, res) => {
     const records = await Record.find({idUser: req.userId}, (err) => {
         return err;
@@ -40,7 +51,6 @@ exports.getRecords = async (req, res) => {
 }
 
 exports.getOneRecord = async (req, res) => {
-    console.log(req.params.id);
     const record = await Record.findById(req.params.id);
     if(!record)
         return res
