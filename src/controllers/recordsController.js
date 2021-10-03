@@ -3,9 +3,9 @@ const moment = require('moment');
 
 
 exports.submitRecord = async (req, res) => {
-    const { pillName, pillDate, amount } = req.body;
+    const { pillName, amount, pillID } = req.body;
     
-    if(!pillName || !pillDate || !amount) 
+    if(!pillName || !amount || !pillID) 
         return res
             .json({ message: 'Faltan datos'})
             .status(400);
@@ -13,11 +13,13 @@ exports.submitRecord = async (req, res) => {
     try{
         const record = new Record({
             pillName,
-            pillDate,
+            pillHour: moment().format('LT'),
+            pillDate: moment().format('L'),
             idUser: req.userId,
-            amount
+            amount,
+            pillID: pillID.toString()
         })
-        record.pillDate = record.formatDate(record.pillDate); 
+
         await record.save();
 
         return res
@@ -31,8 +33,8 @@ exports.submitRecord = async (req, res) => {
 }
 
 exports.getTodayRecords = async (req, res) => {
-    const records = await Record.find({pillDate: moment()}, (err) => {
-        return err
+    const records = await Record.find({pillDate: moment().format('L')}, (err) => {
+        return err;
     })
 
     return res

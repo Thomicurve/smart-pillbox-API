@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const moment = require('moment');
 
 const recordsSchema = new Schema({
     pillName: {
@@ -6,10 +7,18 @@ const recordsSchema = new Schema({
         required: true
     },
     pillDate: {
-        type: Date,
+        type: String,
+        required: true
+    },
+    pillHour: {
+        type: String,
         required: true
     },
     idUser: {
+        type: String,
+        required: true
+    },
+    pillID: {
         type: String,
         required: true
     },
@@ -19,10 +28,6 @@ const recordsSchema = new Schema({
         default: 1
     }
 })
-
-recordsSchema.methods.formatDate = function(date) {
-    return new Date(date);
-}
 
 module.exports = model('Records', recordsSchema);
 
