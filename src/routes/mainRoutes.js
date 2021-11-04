@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { submitRecord, getRecords , getOneRecord, getTodayRecords} = require('../controllers/recordsController');
 const { register, login, logout } = require('../controllers/authController');
-const { getPills, submitPills, getOnePill} = require('../controllers/pillsController');
+const { getPills, submitPills, getOnePill, deletePill, editPill} = require('../controllers/pillsController');
 const { userAlreadyLogged, userMustBeLogged} = require('./verifyToken');
 
 // RECORDS
@@ -30,6 +30,13 @@ router.post('/new-pill', submitPills);
 
 router.get('/pill/:id', userMustBeLogged);
 router.get('/pill/:id', getOnePill);
+
+router.delete('/delete-pill/:id', userMustBeLogged);
+router.delete('/delete-pill/:id', deletePill); 
+
+router.put('/edit-pill/:id', userMustBeLogged);
+router.put('/edit-pill/:id', editPill);
+
 
 
 // AUTH
