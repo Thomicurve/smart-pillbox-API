@@ -3,7 +3,7 @@ const moment = require('moment');
 
 
 exports.submitRecord = async (req, res) => {
-    const { pillName, amount, pillID } = req.body;
+    const { pillName, amount, pillID, pillHour, pillDate } = req.body;
     
     if(!pillName || !amount || !pillID) 
         return res
@@ -13,8 +13,8 @@ exports.submitRecord = async (req, res) => {
     try{
         const record = new Record({
             pillName,
-            pillHour: moment().format('LT'),
-            pillDate: moment().format('L'),
+            pillHour,
+            pillDate,
             idUser: req.userId,
             amount,
             pillID: pillID.toString()

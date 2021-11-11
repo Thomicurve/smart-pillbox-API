@@ -3,3 +3,6 @@ node_modules
 
 # ENVIROMENT VARS
 .env
+
+#distribution
+dist
