@@ -20,6 +20,10 @@ const PillsSchema = new Schema({
     amount: {
         type: Number,
         required: true
+    },
+    position: {
+        type: Number,
+        required: true
     }
 })
 

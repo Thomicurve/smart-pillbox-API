@@ -12,9 +12,10 @@ exports.submitPills = async (req, res) => {
         pillName,
         repeat,
         pillHour,
-        amount } = req.body;
+        amount,
+        position } = req.body;
 
-    if (!pillName || !repeat || !pillHour || !amount)
+    if (!pillName || !repeat || !pillHour || !amount || !position)
         return res
             .json({ message: 'Faltan datos', done: false })
             .status(403);
@@ -25,6 +26,7 @@ exports.submitPills = async (req, res) => {
         repeat,
         pillHour,
         amount,
+        position,
         idUser: req.userId
     });
     await pill.save();
@@ -45,33 +47,8 @@ exports.getPills = async (req, res) => {
     }
 }
 
-exports.getOnePill = async (req, res) => {
-    const { id } = req.params;
-    if (!id)
-        return res
-            .json({ message: 'id pill empty' })
-            .status(400);
-
-    const result = await verifyUser(req, res, id, Pills);
-    if (!result) return res.json({ message: 'Unexpected error' }).status(403);
-
-    try {
-        const pill = await Pills.findOne({ _id: id });
-        if (!pill)
-            return res
-                .json({ message: 'Pastilla no encontrada' })
-                .status(404);
-        return res.json({ done: true, results: pill });
-    }
-    catch (err) {
-        throw new Error(`Error finding id / ${err}`)
-    }
-
-}
-
 exports.deletePill = async (req, res) => {
     const { id } = req.params;
-    console.log(verifyUser(req, id, Pills));
     const result = await verifyUser(req, id, Pills);
     if (!result) return res.json({ message: 'Unexpected error' }).status(403);
 
@@ -87,25 +64,25 @@ exports.deletePill = async (req, res) => {
 
 exports.editPill = async (req, res) => {
     const { id } = req.params;
-    const { pillName, repeat, pillHour, amount } = req.body;
+    const { pillName, repeat, pillHour, amount, position } = req.body;
 
     const result = await verifyUser(req, id, Pills);
-    if (!result) return res.json({ message: 'Unexpected error' }).status(403);
+    if (!result) return res.json({ message: 'Error inesperado' }).status(403);
 
     try {
         const oldPill = await Pills.findOne({_id: id});
-        console.log(oldPill);
         await Pills.updateOne({ _id: id },
             { 
                 pillName: pillName ? pillName : oldPill.pillName, 
                 repeat: repeat ? repeat : oldPill.repeat, 
                 pillHour: pillHour  ? pillHour : oldPill.pillHour, 
-                amount: amount ? amount : oldPill.amount});
+                amount: amount ? amount : oldPill.amount,
+                position: position ? position : oldPill.position});
 
-        return res.json({ message: 'pill updated', done: true });
+        return res.json({ message: 'pastilla actualizada', done: true });
 
     } catch (err) {
-        throw new Error(`Error updating the pill: ${err}`)
+        throw new Error(`Error actualizando la pastilla: ${err}`)
     }
 
 

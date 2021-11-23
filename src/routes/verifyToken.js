@@ -5,7 +5,7 @@ function userMustBeLogged (req, res, next) {
     
     if (!token) {
         return res
-            .json({message: 'the user must be logged'})
+            .json({message: 'El usuario debe estar logueado'})
             .status(401);
     }
     req.userId = jwt.verify(token, process.env.SECRET);
